@@ -1,6 +1,9 @@
 let app = Vue.createApp({
     data(){
         return {
+          name:'',
+          mobile:"",
+          confirmed:false,
           appliedCoupon:null,
           couponCode:"",
           coupons:[
@@ -183,9 +186,18 @@ let app = Vue.createApp({
         this.selectSeat.forEach(seat => {
           total+=seat.price;
         });
+        if (this.appliedCoupon != null) {
+          let r = this.appliedCoupon.discount;
+          total=total-r;
+          console.log(this.appliedCoupon);
+          
+        
+        }
         console.log(total);
         return total;
       },
+
+      
       
     },
 
@@ -194,7 +206,7 @@ let app = Vue.createApp({
            let s = this.seats[i];
 
            if(this.selectSeat.length >3){
-            
+   
             alert('one user can not select more than 4 seats');
             return s;
 
@@ -205,10 +217,10 @@ let app = Vue.createApp({
             
            }
 
-           else if(s.type === "seleceted"){
-            s.type='available';
+          //  else if(s.type === "seleceted"){
+          //   s.type='available';
                 
-           }
+          //  }
 
            else
            {
@@ -218,11 +230,49 @@ let app = Vue.createApp({
            }
          
           
-        }
+        },
+
+        confirm(){
+          if(!this.name||!this.mobile)
+          {
+            alert('Please enter name and mobile');
+            return ;
+          }
+          this.confirmed = true; 
+        },
+
+
+        resetData(){
+          this.confirmed = false;
+          this.name = '';
+          this.mobile = '';
+          this.appliedCoupon=null;
+
+          this.seats.forEach((seat)=>{
+            if(seat.type =='seleceted'){
+              seat.type='sold';
+            }
+          })
+        },
+        
     },
 
 
     watch:{
+      couponCode(newValue){
+        if(newValue.length==10)
+        {
+          let searchedCoupon= this.coupons.filter(item =>item.code==newValue);
+
+          if(searchedCoupon.length == 1){
+            this.appliedCoupon = searchedCoupon[0];
+            this.couponCode = '';
+          }
+          else{
+            alert("couponCode not valid");
+          }
+        }
+      }
 
     }
 
