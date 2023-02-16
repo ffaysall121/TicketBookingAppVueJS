@@ -6,6 +6,7 @@ let app = Vue.createApp({
           confirmed:false,
           appliedCoupon:null,
           couponCode:"",
+          sit:false,
           coupons:[
             {
               code:"1234567890",
@@ -204,7 +205,7 @@ let app = Vue.createApp({
     methods: {
         handelClick(i){
            let s = this.seats[i];
-
+          console.log(s);
            if(this.selectSeat.length >3){
    
             alert('one user can not select more than 4 seats');
@@ -214,13 +215,14 @@ let app = Vue.createApp({
            if(s.type === "available"){
             console.log(s.type);
             s.type='seleceted';
+            this.sit=true;
             
            }
 
-          //  else if(s.type === "seleceted"){
-          //   s.type='available';
-                
-          //  }
+           else if(s.type === "seleceted"){
+            s.type='available';
+            this.sit=false;  
+           }
 
            else
            {
