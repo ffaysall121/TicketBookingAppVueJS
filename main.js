@@ -207,11 +207,21 @@ let app = Vue.createApp({
            let s = this.seats[i];
           console.log(s);
            if(this.selectSeat.length >3){
-   
+            
+            if(s.type === "seleceted"){
+              s.type='available';
+              this.sit=false;  
+             }
+             else{
+
             alert('one user can not select more than 4 seats');
             return s;
+             }
 
            }
+
+           else{
+
            if(s.type === "available"){
             console.log(s.type);
             s.type='seleceted';
@@ -224,12 +234,15 @@ let app = Vue.createApp({
             this.sit=false;  
            }
 
+         
+
            else
            {
               alert('Please select another.this seat already exists');
             
               return s;
            }
+          }
          
           
         },
